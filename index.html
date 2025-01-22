@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ちょうしぜんけんきゅうぶ</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- 添加图标 -->
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow: auto; /* 确保页面可以滚动 */
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(90deg, #ff044, #000);
+            transition: all 0.3s ease;
+        }
+        header h1 {
+            font-size: 3rem;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        header:hover h1 {
+            content: "👽️💀👻🤍"; /* 鼠标悬停时变为这些表情 */
+        }
+        .members, .archives, .message-board, .ghost-photos {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            background-color: #111;
+        }
+        .members h2, .archives h2, .message-board h2, .ghost-photos h2 {
+            font-size: 2rem;
+            text-shadow: 0 0 5px #fff;
+        }
+        .members h2:hover, .archives h2:hover, .message-board h2:hover, .ghost-photos h2:hover { 
+            color: #bd3e5e;
+            transition: color 0.3s ease;
+        }
+        .member-group {
+            margin-bottom: 20px;
+        }
+        .member-group h3 {
+            color: #ff4444;
+        }
+        .member {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px dashed #444;
+        }
+        .member span {
+            font-size: 1.2rem;
+            color: #852d67;
+        }
+        .archives .event {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #222;
+            border-radius: 5px;
+            background-color: #222;
+        }
+        .archives .event span {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 1rem;
+            color: #ff6666;
+        }
+        .message-board form {
+            margin-bottom: 20px;
+        }
+        .message-board form input, .message-board form textarea {
+            width: calc(100% - 20px);
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #222;
+            color: #fff;
+        }
+        .message-board .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #222;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #111;
+            font-size: 1rem;
+        }
+        footer a {
+            color: #ff4444;
+            text-decoration: none;
+        }
+
+        .floating-emojis {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10000;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+        }
+        .emoji {
+            font-size: 2rem;
+            position: absolute;
+            opacity: 0.7;
+            animation: float 10s infinite;
+        }
+        .emoji1 {
+            animation-duration: 8s;
+        }
+        .emoji2 {
+            animation-duration: 12s;
+        }
+        .emoji3 {
+            animation-duration: 15s;
+        }
+
+        @keyframes float {
+            0% { 
+                transform: translateY(0) rotate(0);
+            }
+            50% { 
+                transform: translateY(-200px) rotate(180deg); 
+            }
+            100% { 
+                transform: translateY(0) rotate(360deg); 
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ちょうしぜんけんきゅうぶ</h1>
+    </header>
+    <div class="members">
+        <h2>メンバー一覧</h2>
+        <div class="member-group">
+            <h3>三年生組</h3>
+            <div class="member">久世 怜 <span>部長</span></div>
+            <div class="member">本間 榊</div>
+            <div class="member">箱崎 終</div>
+            <div class="member">三生 此</div>
+            <div class="member">今清水 朔</div>
+        </div>
+        <div class="member-group">
+            <h3>二年生組</h3>
+            <div class="member">浅倉 亜紀</div>
+            <div class="member">黒見 代</div>
+            <div class="member">今清水 榎</div>
+            <div class="member">笹留 幽</div>
+            <div class="member">笹留 言</div>
+        </div>
+    </div>
+    <div class="archives">
+        <h2>怪異事件記録簿</h2>
+        <div class="event">事件一：存在しない同級生 <span>💀 已探索</span></div>
+        <div class="event">事件二：学校の屋上に...? <span>👾 未探索</span></div>
+    </div>
+    <div class="ghost-photos">
+        <h2>鬼魂写真展示</h2>
+        <form id="photoUploadForm">
+            <label for="ghostPhoto">上传你的鬼魂照片：</label>
+            <input type="file" id="ghostPhoto" accept="image/*" required>
+            <button type="submit">提交</button>
+        </form>
+        <div id="photoGallery"></div>
+    </div>
+    <div class="message-board">
+        <h2>掲示板</h2>
+        <form id="messageForm">
+            <input type="text" id="username" placeholder="名前（匿名可）" required>
+            <textarea id="messageContent" placeholder="メッセージ内容" rows="4" required></textarea>
+            <button type="submit">送信</button>
+        </form>
+        <div id="messages">
+        </div>
+    </div>
+    <footer>
+        <p>連絡先: <a href="https://x.com/reiovo_o_" target="_blank">@reiovo_o_</a></p>
+        <p>TikTok はこちら: <a href="https://www.tiktok.com/@rei_oxo7" target="_blank">@rei_oxo7</a></p>
+    </footer>
+
+    <!-- 漂浮的 Emoji 星星 -->
+    <div class="floating-emojis">
+        <div class="emoji emoji1" style="top: 10%; left: 15%;">🌟</div>
+        <div class="emoji emoji2" style="top: 25%; left: 60%;">🔮</div>
+        <div class="emoji emoji3" style="top: 50%; left: 30%;">🌙</div>
+        <div class="emoji emoji1" style="top: 70%; left: 80%;">🌟</div>
+        <div class="emoji emoji2" style="top: 40%; left: 90%;">🔮</div>
+        <div class="emoji emoji3" style="top: 60%; left: 10%;">🌙</div>
+        <div class="emoji emoji1" style="top: 80%; left: 50%;">🌟</div>
+    </div>
+
+    <script>
+        // Handle message board submission with localStorage
+        const form = document.getElementById('messageForm');
+        const messages = document.getElementById('messages');
+
+        window.onload = function() {
+            const savedMessages = JSON.parse(localStorage.getItem('messages')) || [];
+            savedMessages.forEach(function(message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.innerHTML = `<strong>${message.username}:</strong><p>${message.content}</p>`;
+                messages.appendChild(messageElement);
+            });
+        };
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const messageContent = document.getElementById('messageContent').value;
+
+            const savedMessages = JSON.parse(localStorage.getItem('messages')) || [];
+            savedMessages.push({ username, content: messageContent });
+            localStorage.setItem('messages', JSON.stringify(savedMessages));
+
+            document.getElementById('messageContent').value = ''; // Clear the message input
+        });
+
+        // Handle photo upload
+        const photoUploadForm = document.getElementById('photoUploadForm');
+        const photoGallery = document.getElementById('photoGallery');
+
+        photoUploadForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const photoInput = document.getElementById('ghostPhoto');
+            const file = photoInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    imgElement.style.maxWidth = '200px';
+                    imgElement.style.margin = '10px';
+                    photoGallery.appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
